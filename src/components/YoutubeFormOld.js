@@ -12,6 +12,24 @@ const onSubmit = (values) => {
     console.log(values);
 }
 
+const validate = (values) => {
+    let errors = {}
+
+    if (!values.name && values.name.length === 0) {
+        errors.name = "Name is Required"
+    }
+    if (!values.email && values.email.length === 0) {
+        errors.email = "Email is Required"
+    } else if (!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/).test(values.email)) {
+        errors.email = "Invalid Email Format"
+    }
+    if (!values.channel && values.channel.length === 0) {
+        errors.channel = "Channel is Required"
+    }
+
+    return errors;
+}
+
 const validationSchema = Yup.object({
     name: Yup.string().required('Name is Required !'),
     email: Yup.string()
