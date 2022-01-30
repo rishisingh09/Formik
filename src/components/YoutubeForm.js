@@ -1,11 +1,18 @@
 import React from 'react';
-import { useFormik } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
+import TextError from './TextError';
 
 const initialValues = {
     name: 'Rishi',
     email: '',
-    channel: ''
+    channel: '',
+    comments: '',
+    address: '',
+    social:{
+        facebook:'',
+        twitter:''
+    }
 }
 
 const onSubmit = (values) => {
@@ -20,63 +27,86 @@ const validationSchema = Yup.object({
     channel: Yup.string().required('Channel is Required !')
 })
 
+
 const YoutubeForm = () => {
-    const formik = useFormik({
-        initialValues,
-        onSubmit,
-        validationSchema
-    })
-    console.log("Form Errors --", formik.touched);
     return (
-        <div className="signupFrm">
-            <form action="" className="form" onSubmit={formik.handleSubmit}>
-                <h1 className="title">Youtube Form</h1>
+        <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+        >
+            <div className="signupFrm">
+                <Form action="" className="form">
+                    <h1 className="title">Youtube Form</h1>
 
-                <div className="inputContainer">
-                    <label htmlFor="" className="label">Name</label>
-                    <input type="text"
-                        className="input"
-                        placeholder="Name"
-                        name='name'
-                        onChange={formik.handleChange}
-                        value={formik.values.name}
-                        onBlur={formik.handleBlur}
-                    />
-                    {(formik.touched.name && formik?.errors?.name) && <div className='errors'>{formik.errors.name}</div>}
-                </div>
+                    <div className="inputContainer">
+                        <label htmlFor="" className="label">Name</label>
+                        <Field type="text"
+                            className="input"
+                            placeholder="Name"
+                            name='name'
+                        />
+                        <ErrorMessage name='name' component={TextError} />
+                    </div>
 
-                <div className="inputContainer">
-                    <label htmlFor="" className="label">Email</label>
-                    <input type="text"
-                        className="input"
-                        placeholder="Email"
-                        name='email'
-                        onChange={formik.handleChange}
-                        value={formik.values.email}
-                        onBlur={formik.handleBlur}
-                    />
-                    {(formik.touched.email && formik?.errors?.email) && <div className='errors'>{formik.errors.email}</div>}
-                </div>
+                    <div className="inputContainer">
+                        <label htmlFor="" className="label">Email</label>
+                        <Field type="text"
+                            className="input"
+                            placeholder="Email"
+                            name='email'
+                        />
+                        <ErrorMessage name='email' />
+                    </div>
 
-                <div className="inputContainer">
-                    <label htmlFor="" className="label">Channel</label>
-                    <input type="text"
-                        className="input"
-                        placeholder="Channel"
-                        name='channel'
-                        onChange={formik.handleChange}
-                        value={formik.values.channel}
-                        onBlur={formik.handleBlur}
-                    />
-                    {(formik.touched.channel && formik?.errors?.channel) && <div className='errors'>{formik.errors.channel}</div>}
-                </div>
+                    <div className="inputContainer">
+                        <label htmlFor="" className="label">Channel</label>
+                        <Field type="text"
+                            className="input"
+                            placeholder="Channel"
+                            name='channel'
+                        />
+                        <ErrorMessage name='channel' />
+                    </div>
 
-                <div className="inputContainer">
-                    <input type="submit" className="submitBtn" value="Submit" />
-                </div>
+                    <div className='inputContainer'>
+                        <label htmlFor='address'>Address</label>
+                        <Field id='address' name='address'>
+                            {(props) => {
+                                const { field, form, meta } = props;
+                                return (
+                                    <div>
+                                        <input id='address' {...field}/>
+                                        {(meta.touched && meta.error) && <div>{meta.error}</div>}
+                                    </div>
+                                )
+                            }}
+                        </Field>
+                    </div>
 
-            </form>
-        </div>
+                    <div className='inputContainer'>
+                        <label htmlFor='comments'>Comments</label>
+                        <Field as='textarea' id='comments' name='comments'></Field>
+                    </div>
+
+                    <div className='inputContainer'>
+                        <label htmlFor='facebook'>Facebook</label>
+                        <Field type="text"
+                            className="input" id='facebook' name='social.facebook'></Field>
+                    </div>
+
+                    <div className='inputContainer'>
+                        <label htmlFor='twitter'>Twitter</label>
+                        <Field type="text"
+                            className="input" id='twitter' name='social.twitter'></Field>
+                    </div>
+
+                    <div className="inputContainer">
+                        <input type="submit" className="submitBtn" value="Submit" />
+                    </div>
+                </Form>
+            </div>
+        </Formik>
 
     )
 }

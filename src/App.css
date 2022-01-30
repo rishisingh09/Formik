@@ -37,7 +37,7 @@ label{
   margin-bottom: 5px;
 }
 
-input[type=text], select {
+input[type=text], #comments, #address, select {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -65,5 +65,8 @@ input[type=submit]:hover {
 div {
   border-radius: 5px;
   background-color: #f2f2f2;
+}
+
+.form{
   padding: 20px;
 }
